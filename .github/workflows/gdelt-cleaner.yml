@@ -1,0 +1,68 @@
+name: GDELT cleaner
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: gdelt-cleaner
+  cancel-in-progress: false
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    defaults:
+      run:
+        working-directory: gdelt_pipeline
+
+    env:
+      GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+      SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      MODEL_CHAIN: "groq:qwen/qwen3.8-27b,groq:openai/gpt-oss-20b,openrouter:openrouter/free"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+
+      - name: Fetch, clean, and save GDELT rows
+        run: |
+          python clean_gdelt.py \
+            --bigquery-project "$GCP_PROJECT_ID" \
+            --gazetteer gazetteer.csv \
+            --lookback-days 3 \
+            --limit 15 \
+            --max-bytes-billed 2000000000 \
+            --save-supabase
+
+      - name: Upload CSV results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: gdelt-results-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            gdelt_pipeline/cleaned.csv
+            gdelt_pipeline/review.csv
+          if-no-files-found: ignore
