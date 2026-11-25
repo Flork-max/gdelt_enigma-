@@ -1,3 +1,6 @@
+# gdelt_enigma-
+Fetchs gdelt event data and cleans it via LLM
+
 # GDELT cleaner
 
 The cleaner uses GDELT URLs to find candidate articles about political violence or armed conflict in Pakistan. It excludes routine crime and unrelated news. For an article with a supported location and one gazetteer match, it replaces the location and coordinates and preserves the originals. The GDELT date and event code remain source metadata. A corrected row is still an article-derived report.
