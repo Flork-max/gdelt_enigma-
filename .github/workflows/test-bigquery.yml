@@ -1,0 +1,46 @@
+name: Test BigQuery connection
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: python -m pip install google-cloud-bigquery
+
+      - uses: google-github-actions/auth@v3
+        with:
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+
+      - name: Test query and GDELT table access
+        env:
+          GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+        run: |
+          python - <<'PY'
+          import os
+          from google.cloud import bigquery
+
+          client = bigquery.Client(
+              project=os.environ["GCP_PROJECT_ID"],
+              location="US",
+          )
+
+          row = next(iter(client.query("SELECT 1 AS connected").result()))
+          print(f"BigQuery query succeeded: {row.connected}")
+
+          table = client.get_table("gdelt-bq.gdeltv2.events_partitioned")
+          print(f"GDELT table accessible: {table.full_table_id}")
+          PY
