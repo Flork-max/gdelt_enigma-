@@ -1,0 +1,25 @@
+location_id,name,province,district,division,tehsil,location_type,latitude,longitude,aliases,source
+PK-KP-PES-001,Peshawar,Khyber Pakhtunkhwa,Peshawar,Peshawar,Peshawar,city,34.0151,71.5249,"Peshawar|پشاور",GeoNames
+PK-KP-MAR-001,Mardan,Khyber Pakhtunkhwa,Mardan,Mardan,Mardan,city,34.1989,72.0231,"Mardan|مردان",GeoNames
+PK-KP-SWA-001,Mingora,Khyber Pakhtunkhwa,Swat,Malakand,Babuzai,city,34.7795,72.3621,"Mingora|منگورہ",GeoNames
+PK-KP-KHT-001,Kohat,Khyber Pakhtunkhwa,Kohat,Kohat,Kohat,city,33.581958,71.449291,"Kohat|کوہاٹ",GeoNames
+PK-KP-BAN-001,Bannu,Khyber Pakhtunkhwa,Bannu,Bannu,Bannu,city,32.9861,70.6042,"Bannu|بنوں",GeoNames
+PK-KP-DIK-001,Dera Ismail Khan,Khyber Pakhtunkhwa,Dera Ismail Khan,Dera Ismail Khan,Dera Ismail Khan,city,31.8320,70.9024,"Dera Ismail Khan|D I Khan|ڈیرہ اسماعیل خان",GeoNames
+PK-KP-ABB-001,Abbottabad,Khyber Pakhtunkhwa,Abbottabad,Hazara,Abbottabad,city,34.1463,73.2117,"Abbottabad|ایبٹ آباد",GeoNames
+PK-KP-CHT-001,Chitral,Khyber Pakhtunkhwa,Lower Chitral,Malakand,Chitral,city,35.8518,71.7864,"Chitral|چترال",GeoNames
+PK-KP-WAZ-001,Mir Ali,Khyber Pakhtunkhwa,North Waziristan,Bannu,Mir Ali,town,32.9744,70.2736,"Mir Ali|میر علی",GeoNames
+PK-KP-WAZ-002,Wana,Khyber Pakhtunkhwa,Upper South Waziristan,Dera Ismail Khan,Wana,town,32.3047,69.5703,"Wana|وانا",GeoNames
+PK-KP-KUR-001,Parachinar,Khyber Pakhtunkhwa,Kurram,Kohat,Parachinar,city,33.8992,70.1008,"Parachinar|پاراچنار",GeoNames
+PK-KP-KHY-001,Jamrud,Khyber Pakhtunkhwa,Khyber,Peshawar,Jamrud,town,34.0000,71.3833,"Jamrud|جمرود",GeoNames
+PK-BA-QUE-001,Quetta,Balochistan,Quetta,Quetta,Quetta,city,30.1798,66.9750,"Quetta|کوئٹہ",GeoNames
+PK-BA-GWA-001,Gwadar,Balochistan,Gwadar,Makran,Gwadar,city,25.1264,62.3225,"Gwadar|گوادر",GeoNames
+PK-BA-TUR-001,Turbat,Balochistan,Kech,Makran,Turbat,city,26.0012,63.0485,"Turbat|تربت",GeoNames
+PK-BA-KHU-001,Khuzdar,Balochistan,Khuzdar,Kalat,Khuzdar,city,27.8000,66.6167,"Khuzdar|خضدار",GeoNames
+PK-BA-CHA-001,Chaman,Balochistan,Chaman,Quetta,Chaman,city,30.9177,66.4526,"Chaman|چمن",GeoNames
+PK-BA-SIB-001,Sibi,Balochistan,Sibi,Sibi,Sibi,city,29.5430,67.8773,"Sibi|سبی",GeoNames
+PK-BA-ZHO-001,Zhob,Balochistan,Zhob,Zhob,Zhob,city,31.3411,69.4481,"Zhob|ژوب",GeoNames
+PK-BA-SUI-001,Sui,Balochistan,Dera Bugti,Sibi,Sui,town,28.6453,69.1769,"Sui|سوئی",GeoNames
+PK-PB-LHR-001,Lahore,Punjab,Lahore,Lahore,Lahore,city,31.5204,74.3587,"Lahore|لاہور",GeoNames
+PK-PB-RWP-001,Rawalpindi,Punjab,Rawalpindi,Rawalpindi,Rawalpindi,city,33.5651,73.0169,"Rawalpindi|راولپنڈی",GeoNames
+PK-SD-KHI-001,Karachi,Sindh,Karachi Central,Karachi,Karachi,city,24.8607,67.0011,"Karachi|کراچی",GeoNames
+PK-ICT-ISB-001,Islamabad,Islamabad Capital Territory,Islamabad,Islamabad,Islamabad,city,33.6844,73.0479,"Islamabad|اسلام آباد",GeoNames
