@@ -18,10 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
-    defaults:
-      run:
-        working-directory: gdelt_pipeline
-
     env:
       GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       SUPABASE_URL: ${{ vars.SUPABASE_URL }}
@@ -63,6 +59,6 @@ jobs:
         with:
           name: gdelt-results-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            gdelt_pipeline/cleaned.csv
-            gdelt_pipeline/review.csv
+            cleaned.csv
+            review.csv
           if-no-files-found: ignore
