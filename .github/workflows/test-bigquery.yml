@@ -12,17 +12,17 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
-      GCP_WIF_PROVIDER: ${{ vars.GCP_WIF_PROVIDER }}
-      GCP_SERVICE_ACCOUNT: ${{ vars.GCP_SERVICE_ACCOUNT }}
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      GCP_WIF_PROVIDER: ${{ secrets.GCP_WIF_PROVIDER }}
+      GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
     steps:
-      - name: Check Google Cloud variables
+      - name: Check Google Cloud settings
         shell: bash
         run: |
           for name in GCP_PROJECT_ID GCP_WIF_PROVIDER GCP_SERVICE_ACCOUNT; do
             if [[ -z "${!name}" ]]; then
-              echo "::error::$name is empty. Add it under Settings → Secrets and variables → Actions → Variables."
+              echo "::error::$name was not available to this run. Check the repository's Actions secrets."
               exit 1
             fi
           done
@@ -32,7 +32,7 @@ jobs:
             exit 1
           fi
 
-          echo "All three Google Cloud variables are set."
+          echo "All three Google Cloud settings are available."
 
       - uses: actions/checkout@v4
 
@@ -46,9 +46,9 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v3
         with:
-          project_id: ${{ vars.GCP_PROJECT_ID }}
-          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
-          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
       - name: Test query and GDELT table access
         run: |
