@@ -575,7 +575,7 @@ async def search_alternate_articles(session, original_url):
             if host == original_host:
                 continue
 
-            if host in {"news.google.com", "google.com"}:
+            if host == "google.com":
                 continue
 
             normalized = canonical_url(link)
@@ -635,10 +635,27 @@ async def recover_article(session, original_url):
 
         if fetched["status"] == "fetched":
 
+            # Google News RSS links often redirect to the actual publisher.
+            # Reject a redirect back to the original publisher: it is not
+            # independent alternative-source recovery.
+            original_host = (
+                urlsplit(original_url).hostname or ""
+            ).lower().removeprefix("www.")
+            recovered_url = fetched["final_url"] or candidate["url"]
+            recovered_host = (
+                urlsplit(recovered_url).hostname or ""
+            ).lower().removeprefix("www.")
+
+            if recovered_host in {"google.com", "news.google.com"}:
+                continue
+
+            if recovered_host == original_host:
+                continue
+
             return {
                 "status": "recovered",
                 "article": fetched["article"],
-                "source_url": candidate["url"],
+                "source_url": recovered_url,
                 "source_title": candidate["title"],
                 "final_url": fetched["final_url"],
             }
@@ -708,6 +725,7 @@ async def fetch_all(url_map):
                     "fetch_status": original["status"],
                     "article": original["article"],
                     "final_url": original["final_url"],
+                    "fetch_error": original.get("error", ""),
                     "article_source_url": url,
                     "article_source_title": "",
                     "recovery_status": "not_needed",
@@ -1780,6 +1798,7 @@ def main():
 
             "final_url",
             "fetch_status",
+            "fetch_error",
 
             "article_source_url",
             "article_source_title",
@@ -1878,14 +1897,24 @@ def main():
                     "recovery_source_url": "",
                     "recovery_source_title": "",
                     "recovery_final_url": "",
+                    "fetch_error": "",
                 }
 
             article = article_data["article"]
 
+            # Keep article text in memory for classification only.
+            # Do not merge it into the CSV/Supabase output record.
             output = {
-                **row,
-                **article_data,
+                key: value
+                for key, value in row.items()
+                if key != "article"
             }
+            output.update({
+                key: value
+                for key, value in article_data.items()
+                if key not in {"article", "error"}
+            })
+            output["fetch_error"] = article_data.get("fetch_error", "")
 
             status = "inaccessible"
             reason = article_data["fetch_status"]
@@ -1968,7 +1997,11 @@ def main():
                 else (review, review_file)
             )
 
-            writer.writerow(output)
+            # Defensive projection: only write declared CSV columns.
+            writer.writerow({
+                field: output.get(field, "")
+                for field in fields
+            })
 
             file.flush()
 
